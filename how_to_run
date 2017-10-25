@@ -1,0 +1,6 @@
+1. open a terminal and use cd to choose this location
+2. type "make"
+3. type "./bitonic 23 4" , 
+this will run qsort and the my_sort() function and compare results .
+Both of them will sort an array of 2^23 elements , 
+and my_sort() will use 4 active threads .
