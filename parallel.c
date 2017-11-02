@@ -128,40 +128,17 @@ int main(int argc, char **argv) {
  **/
 
  void bitonicMerge(int lo, int cnt, int dir,int num_of_threads) {
-  if (cnt>1) {   
     int k = cnt/2;
-
-    if(num_of_threads<1){
-      // num_of_threads = 0;
-       for (int i=lo; i<lo+k; i++)
-        compare(i, i+k, dir);
-    }else{
-      struct Pthread_data_sec* data = (struct Pthread_data_sec*)malloc(num_of_threads*sizeof(struct Pthread_data_sec));
-      pthread_t* threads = (pthread_t*) malloc(num_of_threads*sizeof(pthread_t));
-
-      for(int i=0; i<num_of_threads; i++){
-        data[i].lo = lo+i*(k/num_of_threads) ;
-        data[i].k = k ;
-        data[i].length = data[i].lo + k/num_of_threads;
-        data[i].dir = dir;
-      } 
-
-      for(int i=0; i<num_of_threads; i++){
-        pthread_create(&threads[i], NULL, compare_parallel, (void *)(&data[i]));
-      }
-      
-      for(int i=0; i<num_of_threads; i++){
-        pthread_join(threads[i], NULL);
-      }
-
-      free(data);
+    if(k<1){
+      return;
     }
-   
-    bitonicMerge(lo, k, dir,num_of_threads/2);
-    bitonicMerge(lo+k, k, dir,num_of_threads/2);   
+    for (int i=lo; i<lo+k; i++){
+      compare(i, i+k, dir);
+    }
+    bitonicMerge(lo, k, dir,0);
+    bitonicMerge(lo+k, k, dir,0);   
   }
 
-}
 
 /** Procedure compare_parallel() 
    It is used by each thread , in order to compare and sort 
